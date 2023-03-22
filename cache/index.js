@@ -1,7 +1,13 @@
-const { existsSync, writeFileSync, readFileSync } = require('fs');
+const { existsSync, writeFileSync, readFileSync, mkdirSync } = require('fs');
 const { join } = require('path');
 
-const getPath = name => join(__dirname, `./files/${name}.json`);
+const getPath = name => {
+  const dirPath = join(__dirname, `./files`);
+  if(!existsSync(dirPath)){
+    mkdirSync(dirPath, { recursive: true });
+  }
+  return join(__dirname, `./files/${name}.json`)
+}
 
 const getJson = path => {
   // 不存在，返回空对象

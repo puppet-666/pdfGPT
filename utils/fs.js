@@ -11,7 +11,8 @@ function readJsonFile(path) {
 }
 
 function getPdfName(pdfPath) {
-  return pdfPath.split('/').pop().split('.pdf')[0];
+  const formatPdf = process.platform === 'win32' ? pdfPath.split('\\') : pdfPath.split('/');
+  return formatPdf.pop().split('.pdf')[0];
 }
 
 function getPath(pdfName, fileName) {
@@ -19,7 +20,7 @@ function getPath(pdfName, fileName) {
   const dirPath = join(__dirname, relativeDirPath);
   // 文件夹初始化
   if (!existsSync(dirPath)) {
-    mkdirSync(dirPath);
+    mkdirSync(dirPath, { recursive: true });
   }
   return join(__dirname, `${relativeDirPath}/${fileName}.json`);
 }
@@ -53,6 +54,10 @@ function getPdfPath(pdfName) {
 
 function writeAnswer(pdfName, question, answer) {
   const answerPath = join(__dirname, `../answerFiles/${pdfName}_answers.json`);
+  const dirPath = join(__dirname, `../answerFiles`);
+  if(!existsSync(dirPath)){
+    mkdirSync(dirPath, { recursive: true });
+  }
   if (!existsSync(answerPath)) {
     writeFileSync(answerPath, JSON.stringify({ [question]: answer }));
     return;

@@ -1,4 +1,4 @@
-const pdfjs = require('pdfjs-dist');
+const pdfjs = require('pdfjs-dist/legacy/build/pdf.js');
 const { encode } = require('gpt-3-encoder');
 const {
   isDiseaseIntro,
